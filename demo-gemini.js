@@ -5,7 +5,7 @@
  * Uses Google Gemini API directly to analyze GitHub repos
  */
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 import fs from "fs";
 import path from "path";
 
@@ -13,8 +13,7 @@ const REPO_URL = process.argv[2] || "https://github.com/expressjs/express";
 const AGENT_DIR = "./agent";
 
 // Initialize Gemini
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+const ai = new GoogleGenAI({});
 
 // Load agent identity
 function loadAgent() {
@@ -64,17 +63,32 @@ Provide:
 
     console.log("\n📝 Analyzing with Gemini...\n");
 
-    const response = await model.generateContent({
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
       contents: [
         {
           role: "user",
-          parts: [{ text: userPrompt }],
-        },
-      ],
-      systemInstruction: systemPrompt,
+          parts: [
+            {
+              text: `${systemPrompt}\n\n${userPrompt}`
+            }
+          ]
+        }
+      ]
     });
 
-    const result = response.response.text();
+    // Handle response - could be text() method or direct text property
+    let result;
+    if (typeof response.text === 'function') {
+      result = response.text();
+    } else if (response.text) {
+      result = response.text;
+    } else if (response.candidates && response.candidates[0] && response.candidates[0].content) {
+      result = response.candidates[0].content.parts[0].text;
+    } else {
+      result = JSON.stringify(response, null, 2);
+    }
+    
     console.log(result);
 
     console.log("\n" + "─".repeat(50));
@@ -82,7 +96,7 @@ Provide:
   } catch (error) {
     console.error("\n❌ Error:", error.message);
     if (error.message.includes("API_KEY")) {
-      console.error("\nℹ️  Make sure GOOGLE_API_KEY is set in .env");
+      console.error("\nℹ️  Make sure GEMINI_API_KEY is set in .env");
     }
     process.exit(1);
   }

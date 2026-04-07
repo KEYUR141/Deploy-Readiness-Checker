@@ -11,6 +11,7 @@ skills:
   - secret-scan
   - ci-cd-check
   - readiness-report
+  - api-security-check
 tags:
   - devops
   - deployment
