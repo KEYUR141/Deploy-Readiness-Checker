@@ -1,0 +1,17 @@
+spec_version: "0.1.0"
+name: my-agent
+version: 0.1.0
+description: A helpful assistant agent
+author: ""
+license: MIT
+model:
+  preferred: claude-sonnet-4-5-20250929
+  constraints:
+    temperature: 0.3
+    max_tokens: 4096
+skills: []
+tools: []
+runtime:
+  max_turns: 30
+  timeout: 120
+tags: []
