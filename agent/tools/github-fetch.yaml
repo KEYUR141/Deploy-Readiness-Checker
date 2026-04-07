@@ -1,0 +1,16 @@
+name: github-fetch
+description: "Fetch file contents and directory structure from a GitHub repository"
+input_schema:
+  type: object
+  properties:
+    repo_url:
+      type: string
+      description: "GitHub repo URL e.g. https://github.com/owner/repo"
+    path:
+      type: string
+      description: "File or directory path within the repo"
+  required: [repo_url]
+implementation:
+  type: script
+  path: github-fetch.sh
+  runtime: node

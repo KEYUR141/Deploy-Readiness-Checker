@@ -1,17 +1,18 @@
 spec_version: "0.1.0"
-name: my-agent
-version: 0.1.0
-description: A helpful assistant agent
-author: ""
-license: MIT
+name: deploy-readiness-agent
+version: 1.0.0
+description: "Checks if a GitHub repository is production/deployment ready before going live"
 model:
-  preferred: claude-sonnet-4-5-20250929
-  constraints:
-    temperature: 0.3
-    max_tokens: 4096
-skills: []
-tools: []
-runtime:
-  max_turns: 30
-  timeout: 120
-tags: []
+  preferred: "anthropic:claude-sonnet-4-5-20250929"
+  fallback:
+    - "openai:gpt-4o"
+skills:
+  - repo-structure-check
+  - secret-scan
+  - ci-cd-check
+  - readiness-report
+tags:
+  - devops
+  - deployment
+  - security
+  - hackathon
