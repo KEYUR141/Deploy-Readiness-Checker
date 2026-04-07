@@ -3,9 +3,9 @@ name: deploy-readiness-agent
 version: 1.0.0
 description: "Checks if a GitHub repository is production/deployment ready before going live"
 model:
-  preferred: "anthropic:claude-sonnet-4-5-20250929"
+  preferred: "google:gemini-3.0-flash"
   fallback:
-    - "openai:gpt-4o"
+    - "anthropic:claude-sonnet-4-5-20250929"
 skills:
   - repo-structure-check
   - secret-scan
